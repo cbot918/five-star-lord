@@ -10,8 +10,19 @@ import HelloWorld from './components/HelloWorld.vue'
     </div>
 
     <div class="body">
-      <div class="character-preview">
-        <img src="@/assets/pics/knight.png" alt="Knight" class="knight-img" />
+      <div class="top-section">
+        <div class="character-preview">
+          <img src="@/assets/pics/knight.png" alt="Knight" class="knight-img" />
+        </div>
+
+        <div class="stats-container">
+          <div class="stat-item">血量: <span class="val">100/100</span></div>
+          <div class="stat-item">爆發力: <span class="val">50</span></div>
+          <div class="stat-item">戰鬥熟練度: <span class="val">Lv.5</span></div>
+          <div class="stat-item">戰鬥經驗值: <span class="val">80%</span></div>
+        </div>
+
+        <div class="upgrade-btn-small">晉升</div>
       </div>
 
       <div class="content-text">
@@ -44,8 +55,6 @@ import HelloWorld from './components/HelloWorld.vue'
             <div class="grid-item">格子4</div>
           </div>
         </div>
-
-        <div class="upgrade-btn">晉升</div>
       </div>
     </div>
 
@@ -88,31 +97,82 @@ import HelloWorld from './components/HelloWorld.vue'
 .body {
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
-/* --- 角色圖片 --- */
+/* --- 上半部角色與數值資訊 (新配置) --- */
+.top-section {
+  display: flex;
+  align-items: center; /* 垂直置中 */
+  gap: 12px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(184, 134, 11, 0.3);
+}
+
 .character-preview {
-  width: 100%;
-  max-width: 260px;
-  margin-bottom: 25px;
+  flex: 0 0 25%; /* 佔比 1/4 */
 }
 
 .knight-img {
   width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  aspect-ratio: 1 / 1; /* 強制正方形 */
+  object-fit: cover;
+  border-radius: 8px;
   border: 1px solid #444;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-/* --- 區塊共通樣式 (敵人/裝備/背包) --- */
+.stats-container {
+  flex: 1; /* 佔據剩餘空間 */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-item {
+  font-size: 13px;
+  color: #999;
+  white-space: nowrap;
+}
+
+.stat-item .val {
+  color: #eee;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+/* --- 小型正方形晉升按鈕 --- */
+.upgrade-btn-small {
+  width: 55px;
+  height: 55px;
+  min-width: 55px;
+  background: linear-gradient(180deg, #b8860b 0%, #8b6508 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  border: 1px solid #d4af37;
+}
+
+.upgrade-btn-small:active {
+  transform: scale(0.95);
+  filter: brightness(0.8);
+}
+
+/* --- 區塊共通樣式 --- */
 .section-container {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   background: rgba(255, 255, 255, 0.05);
   padding: 15px;
   border-radius: 10px;
@@ -122,11 +182,11 @@ import HelloWorld from './components/HelloWorld.vue'
 .section-title {
   text-align: center;
   width: 100%;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   color: #cfccbd;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-shadow: 1px 1px 2px black;
 }
 
@@ -134,7 +194,7 @@ import HelloWorld from './components/HelloWorld.vue'
   width: 100%;
 }
 
-/* --- 敵人列表 (Flex) --- */
+/* --- 敵人列表 --- */
 .enemy-list {
   display: flex;
   gap: 12px;
@@ -143,8 +203,8 @@ import HelloWorld from './components/HelloWorld.vue'
 }
 
 .enemy-img {
-  width: 65px;
-  height: 65px;
+  width: 60px;
+  height: 60px;
   object-fit: cover;
   border: 2px solid #555;
   border-radius: 8px;
@@ -152,7 +212,7 @@ import HelloWorld from './components/HelloWorld.vue'
   flex-shrink: 0;
 }
 
-/* --- 裝備與背包網格 (Grid) --- */
+/* --- 網格佈局 --- */
 .grid-layout {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -162,46 +222,21 @@ import HelloWorld from './components/HelloWorld.vue'
 .grid-item {
   background: #2a2a2a;
   border: 1px solid #444;
-  height: 65px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  color: #999;
+  font-size: 12px;
+  color: #888;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.grid-item:hover {
-  border-color: #b8860b;
-  background: #333;
-  color: #fff;
-}
-
-/* 若格子內有裝備的樣式例 */
 .grid-item.active {
   border-color: #ff4500;
   color: #eee;
-}
-
-/* --- 晉升按鈕 --- */
-.upgrade-btn {
-  width: 100%;
-  padding: 15px;
-  background: linear-gradient(180deg, #b8860b 0%, #8b6508 100%);
-  color: white;
-  text-align: center;
-  border-radius: 8px;
-  font-weight: bold;
-  margin: 10px 0 30px 0;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.upgrade-btn:active {
-  transform: translateY(2px);
-  filter: brightness(0.9);
+  background: #332211;
 }
 
 /* --- 底部導覽 --- */
@@ -221,14 +256,9 @@ import HelloWorld from './components/HelloWorld.vue'
   font-size: 15px;
   font-weight: 500;
   color: #888;
-  cursor: pointer;
 }
 
-.nav-item:hover {
-  color: #b8860b;
-}
-
-/* --- 捲軸美化 --- */
+/* --- 捲軸與桌機適配 --- */
 .enemy-list::-webkit-scrollbar {
   height: 4px;
 }
@@ -237,7 +267,6 @@ import HelloWorld from './components/HelloWorld.vue'
   border-radius: 10px;
 }
 
-/* --- 桌機版適配 --- */
 @media (min-width: 768px) {
   .app-container {
     max-width: 450px;
@@ -249,85 +278,3 @@ import HelloWorld from './components/HelloWorld.vue'
   }
 }
 </style>
-
-<!-- 
-<template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
-</template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style> -->
